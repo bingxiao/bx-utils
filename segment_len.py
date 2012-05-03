@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+''' basic statistics to paired-end mapping '''
 
 import numpy as np
 import pysam
@@ -6,9 +7,10 @@ import sys
 import os
 
 try:
-    input_file = os.path.split( sys.argv[1] )[-1]
+    input_file = sys.argv[1]
+    prefix = os.path.split( input_file )[-1]
     if not os.path.exists( input_file + '.bai' ):
-        print >>sys.stderr, '.bai file missing, you have to index the bam file first:\n# samtools index %s'%sys.argv[1]
+        print >>sys.stderr, '.bai file missing, you have to index the bam file first:\n# samtools index %s'%input_file
         sys.exit()
     #samfile = pysam.Samfile( 'a.bam', 'rb' )
     samfile = pysam.Samfile( input_file, 'rb' )
@@ -23,7 +25,7 @@ read1_dic = {}
 read2_dic = {}
 
 segment_length_lst = []
-with open( input_file+'.seglen.all', 'w' ) as out:
+with open( prefix+'.seglen.all', 'w' ) as out:
     for n, read in enumerate( samfile.fetch() ): 
         # if read.is_read1 and
         if read.is_proper_pair and not read.is_qcfail:
@@ -68,7 +70,7 @@ for i in zip( *a )[0]:
     if i not in cnt: cnt[ i ] = 0
     cnt[ i ] += 1
 
-with open( input_file + '.seglen.uniq', 'w' ) as out1:
+with open( prefix + '.seglen.uniq', 'w' ) as out1:
     for b in a:
         if cnt[ b[0] ] > 1: continue
         print >>out1, '\t'.join( b )
