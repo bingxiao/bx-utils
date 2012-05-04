@@ -1,4 +1,10 @@
 
 
 segment_length_distri_merged.pdf
+accepted_hits.test.sam
+out
+test.bam
+test.bam.bai
+b.bam*
+
 
