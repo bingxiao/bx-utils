@@ -8,3 +8,6 @@ test.bam.bai
 b.bam*
 
 
+.DS_Store
+a.py
+
